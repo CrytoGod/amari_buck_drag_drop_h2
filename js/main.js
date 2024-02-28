@@ -7,8 +7,10 @@
 
 // create a 1 to many connection with a variable -> querySelectorAll("queryString")
 let theButtons = document.querySelectorAll("#buttonHolder img"),
+	theHeading = document.querySelector("#headLine h1"),
 	puzzleBoard = document.querySelector(".puzzle-board"),
 	puzzlePieces = document.querySelectorAll(".puzzle-pieces img"),
+	dropZones = document.querySelectorAll('.drop-zone'),
 	// store the dragged piece in a global variable
 	// because we need it in the handleDrop function
 	draggedPiece;
@@ -26,15 +28,33 @@ function changeBGImage() {
 	puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
 }
 
-function handleStartDrag() {
+function handleStartDrag() { 
 	console.log('started dragging this piece:', this);
 	// store a reference to the puzzle piece image that we're dragging
 	// so we can use it later and move it to a drop zone
 	draggedPiece = this;
 }
 
+function handleDragOver(e) { 
+	e.preventDefault(); // e is shorthand for event
+	// this overrides the default dragover behaviour
+	console.log('dragged over me'); 
+}
+
+const handleDrop = (e) => {
+    e.preventDefault();
+    console.log('dropped something on me');
+// Slightly modified Bug fix #1: Check if the drop zone already contains a puzzle piece
+
+    if (this.children.length === 0) {
+ // Move the dragged piece from the left side of the board to the drop zone
+        this.appendChild(draggedPiece);
+    } else {
+        console.log('Oops! The drop zone is occupied!');
+    }
+};
 // step 2
-// event handling always goes at the bottom =>
+// event handling always goes at the bottom => 
 // how do we want users to interact with our app
 
 // 1 to 1 event handling
@@ -46,3 +66,9 @@ theButtons.forEach(button => button.addEventListener("click", changeBGImage));
 
 // add the drag event handling to the puzzle pieces
 puzzlePieces.forEach(piece => piece.addEventListener("dragstart", handleStartDrag));
+
+// add the dragover AND the drop event handling to the drop zones
+dropZones.forEach(zone => zone.addEventListener("dragover", handleDragOver));
+
+// add the drop event handling
+dropZones.forEach(zone => zone.addEventListener("drop", handleDrop));
