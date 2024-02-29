@@ -56,12 +56,12 @@ function handleDragOver(e) {
 
 function handleDrop(e) {
     e.preventDefault();
-    console.log('dropped something on me');
+    console.log('dropping something on me');
 
     if (this.children.length === 0) {
         this.appendChild(draggedPiece);
     } else {
-        console.log('Oops! The drop zone is occupied!');
+        console.log('Nope! This drop zone is occupied!');
     }
 }
 
